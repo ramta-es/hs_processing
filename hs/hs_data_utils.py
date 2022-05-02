@@ -1,24 +1,17 @@
-import cv2 as cv
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from skimage import data, segmentation, feature, future
-import os
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.decomposition import PCA
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-import time
-import json
-from sklearn import svm
-from sklearn.model_selection import train_test_split
-from functools import partial
 import glob
-from sklearn import svm, preprocessing, metrics
-from typing import Union, Iterable
-import tensorflow as tf
+import json
+import os
 import pathlib as Path
-import spectral as spy
 from typing import Tuple
+from typing import Union, Iterable
+
+import cv2 as cv
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import spectral as spy
+import tensorflow as tf
+from skimage import segmentation
 
 
 def open_image(image_folder: Path) -> Tuple[spy.io.envi.SpectralLibrary, list]:

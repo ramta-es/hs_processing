@@ -9,7 +9,7 @@ import spectral as spy
 from typing import Tuple
 import os
 
-
+labelme_line = 'labelme <image to label> -O apc2016_obj3.json'
 'Swir_Parsimon_side_class_2_51_60_no_leaves__after'
 'Vnir_Parsimons__class_1_31_40_no_leaves__after'
 # dir = '/Volumes/My Passport/Parsimon_17_3_21_after'
@@ -63,8 +63,7 @@ def open_image_in_dict(key):
 def cut_crop(rect_list, img):
     for i in range(len(rect_list)):
         rect_list[i] = (
-            img[rect_list[i][1]:rect_list[i][3] + rect_list[i][1], rect_list[i][0]:rect_list[i][2] + rect_list[i][0],
-            :])
+            img[rect_list[i][1]:rect_list[i][3] + rect_list[i][1], rect_list[i][0]:rect_list[i][2] + rect_list[i][0], :])
     return rect_list
 
 
