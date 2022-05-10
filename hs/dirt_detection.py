@@ -8,7 +8,6 @@ path_image_2 = '/Users/ramtahor/Downloads/image002.jpg'
 
 '''Gets path to image and kernel size and returns a grayscale image after morphological operators'''
 
-
 def image_cleaning(path, k_size: tuple):
     image = cv.imread(path)
     kernel = np.ones(k_size, np.uint16)
