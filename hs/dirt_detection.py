@@ -3,8 +3,7 @@ import numpy as np
 import pandas as pd
 import cv2 as cv
 
-path_image_1 = '/Users/ramtahor/Desktop/Screen Shot.png'
-path_image_2 = '/Users/ramtahor/Downloads/image002.jpg'
+path_image_2 = '/Users/ramtahor/Downloads/image002.jpg' # My path to the file
 
 '''Gets path to image and kernel size and returns a grayscale image after morphological operators'''
 
