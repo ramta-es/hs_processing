@@ -20,10 +20,23 @@ def open_image(image_folder: Path) -> Tuple[spy.io.envi.SpectralLibrary, list]:
         raw_file = list(cap.glob('*.raw'))[0]
         hdr_file = list(cap.glob('*.hdr'))[0]
     spec_img = spy.io.envi.open(hdr_file.as_posix(), raw_file.as_posix())
-    spec_img = spec_img[1]
+    # spec_img = spec_img[0]
     spec_img = spec_img[:, :, :]
 
+
     return spec_img
+
+
+
+def open_image2(image_folder: Path) -> np.array:
+    cap = Path.Path(image_folder).joinpath('capture')
+    if len(list(cap.glob('*.raw'))) > 0:
+        raw_file = list(cap.glob('*.raw'))[0]
+    spec_img = spy.io.envi.open(raw_file.as_posix())
+    return spec_img[:, :, :]
+
+
+
 
 def ord_frame_list_all(folder: str):
     frame_list = sorted(
@@ -43,6 +56,7 @@ def reconstruct_image(frames: list):
 name = 'stram_03_pasul'
 
 """cuts the image to a 1000x256 pixels smaller images. return a list of the smaller images and their index for later assembly"""
+
 
 def hs_to_fake_rgb(im: np.ndarray, reduction: Union[str, int, Iterable] = 'norm') -> np.ndarray:
     """
@@ -72,9 +86,6 @@ def hyper_to_fake_rgb(img, channels: list):
     return im.astype(np.float64)
 
 
-
-
-
 def cut_image(img):
     img_list = []
     print(img.shape[2])
@@ -96,8 +107,6 @@ def make_dir(dir_name):
     print('dir was created')
 
 
-
-
 def save_cut_image(dir_name, img_list):
     make_dir(dir_name + '_for_tag')
     make_dir(dir_name)
@@ -106,12 +115,12 @@ def save_cut_image(dir_name, img_list):
         np.save(dir_name + f'\{idx}_full', img[:, :, :])
     print('saved')
 
+
 def save_image(img, name):
     plt.imsave(r"C:\Users\g\Desktop\clementine_seg" + f'\{name}.png', img[150, :, :])
 
 
-
-
+# this function gets a json file and saves it as a csv file
 def json_to_csv(json_path, file_name):
     data = json.load(open(json_path))
     df = pd.DataFrame(data['shapes'])
@@ -120,6 +129,7 @@ def json_to_csv(json_path, file_name):
     # return df
 
 
+# this function gets a json file and returns a df
 def json_to_df(json_path):
     data = json.load(open(json_path))
     df = pd.DataFrame(data['shapes'])
@@ -166,6 +176,8 @@ def draw_conts(json_path, hs_img_shape):
 """
 Reshapes the image to Pixel x Channels
 """
+
+
 def img_reshape(img, mask):
     shape = img.shape
     img = img.reshape(-1, img.shape[1] * img.shape[2]).T
@@ -198,8 +210,6 @@ def plot_clf_results(orig_im, img_mask, clf_type):
     ax[2].set_title('Original image')
 
 
-
-
 def create_small_images(**kwargs):
     img = reconstruct_image(frames=ord_frame_list_all(kwargs['path_to_frame_forlde']))
     save_cut_image(kwargs['path_and_name_of_dir'], cut_image(img))
@@ -207,20 +217,25 @@ def create_small_images(**kwargs):
 
 """ Get median value for every row of a 2d image (one channel) 
 """
+
+
 def get_median(img_2d, mask, shape):  # 2d imges 256x width
     med = np.zeros((shape[2], 1))
     for i in range(img_2d.shape[0]):
         med[i] = np.median(img_2d[i][mask[i] != 0])
     return med  # 256x1
 
+
 """Calc the median for the whole image
 """
+
 
 def get_median_dark(img_2d):  # 2d imges 256x width
     med = np.zeros((256, 1))
     for i in range(img_2d.shape[0]):
         med[i] = np.median(img_2d[i])
     return med  # 256x1
+
 
 # find the median value for every channel in the hs image and arrange it in an array
 def find_white_ref(img, mask):
@@ -235,8 +250,3 @@ def find_dark_ref(img):
     for i in range(img.shape[0]):
         im[i] = get_median_dark(img[i, :, :])
     return im.reshape((224, 256))
-
-
-
-
-
