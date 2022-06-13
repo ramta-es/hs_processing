@@ -38,7 +38,6 @@ def arrange_df(json_path: str, df: pd.DataFrame):
 def cut_box(points, img):
     cnt = np.array(points).astype(np.int)[np.newaxis]
     x, y, w, h = cv.boundingRect(cnt)
-    print(w, h)
     return img[y - 10: y + h + 10, x - 10: x + w + 10, :]
 
 
