@@ -1,21 +1,13 @@
-import glob
+import argparse
 import os
-import pathlib as Path
-from typing import Tuple
-from typing import Union, Iterable
 import cv2 as cv
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pathlib import Path
-from sklearn.svm import SVC
-from skimage import segmentation
-import argparse
-import json
 import hs.hs_data_utils as hsu
 
 parser = argparse.ArgumentParser(description='Arguments for home assignment selection')
-parser.add_argument('--path_to_poly', default='/Users/ramtahor/Desktop/poly-json', help='Path to a polygon files directory')
+parser.add_argument('--path_to_poly', default='/Users/ramtahor/Desktop/poly-json',
+                    help='Path to a polygon files directory')
 parser.add_argument('--path_to_images', default='/Volumes/My Passport/Parsimons', help="path to images directory")
 parser.add_argument('--directory', default='/Users/ramtahor/Desktop/parsimmon_dataset/',
                     help='Directory where the file would be saved')
@@ -76,6 +68,7 @@ def create(**kwargs):
 def main():
     args = parser.parse_args()
     create(img_dir=args.path_to_images, poly_dir=args.path_to_poly, directory=args.directory)
+
 
 if __name__ == '__main__':
     main()
