@@ -23,17 +23,11 @@ def open_image(image_folder: Path) -> Tuple[spy.io.envi.SpectralLibrary, list]:
     # spec_img = spec_img[0]
     spec_img = spec_img[:, :, :]
 
-
     return spec_img
 
 
 
-def open_image2(image_folder: Path) -> np.array:
-    cap = Path.Path(image_folder).joinpath('capture')
-    if len(list(cap.glob('*.raw'))) > 0:
-        raw_file = list(cap.glob('*.raw'))[0]
-    spec_img = spy.io.envi.open(raw_file.as_posix())
-    return spec_img[:, :, :]
+
 
 
 
@@ -250,3 +244,12 @@ def find_dark_ref(img):
     for i in range(img.shape[0]):
         im[i] = get_median_dark(img[i, :, :])
     return im.reshape((224, 256))
+
+def _3d_plot(xs: list, ys: list, zs:list, form: str, size: int):
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+
+    if form == 'scatter':
+        ax.scatter(xs, ys, zs, size=size)
+    else:
+        ax.plot(xs, ys, zs)
