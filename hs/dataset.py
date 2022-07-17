@@ -12,7 +12,7 @@ path = '/Users/ramtahor/Desktop/new_dataset'
 
 class HsDataset(Dataset):
     def __init__(self, images_path, method):
-        self.images, self.labels = self.get_image_and_label(images_path, [400], method)
+        self.images, self.labels = self.get_image_and_label(images_path, [100, 400, 700], method)
 
     def __len__(self):
         return self.images.shape[0]
@@ -33,11 +33,11 @@ class HsDataset(Dataset):
                 iaa.ScaleX((0.5, 1.5)),  # rescale along X axis
                 iaa.ScaleY((0.5, 1.5)),  # rescale along Y axis
                 iaa.Rotate((-45, 45)),  # rotate randomly in -45 45 degrees
-                iaa.Fliplr(0.5),  # horizontally flip 50% of the images
-                iaa.GaussianBlur(sigma=(0, 3.0))])  # blur images with a sigma of 0 to 3.0
-
+                iaa.Fliplr(0.5)]  # horizontally flip 50% of the images
+                # iaa.GaussianBlur(sigma=(0, 3.0))])  # blur images with a sigma of 0 to 3.0
+            )
             image = img(images=(image.reshape(image.shape[2], image.shape[0], image.shape[1])))
-            im_list.append(image.astype(np.float16))
+            im_list.append(image.astype(np.float32))
             label_list.append(int(((str(file).split('.npy')[0]).split('class-')[1]).split('_')[i]))
         return np.array(im_list), np.array(label_list)
 
@@ -51,7 +51,7 @@ class HsDataset(Dataset):
         return train_dl, val_dl
 
 
-data = HsDataset(path, 'class')
-train_loader, test_loader = data.get_dataloaders(batch_size=5)
-for i in range(len(data)):
-    plt.imshow((data[i][0].reshape(224, 224)).astype(np.uint16)), plt.show()
+# data = HsDataset(path, 'class')
+# train_loader, test_loader = data.get_dataloaders(batch_size=10)
+# for i in range(len(data)):
+#     plt.imshow((data[i][0].reshape(224, 224)).astype(np.uint16)), plt.show()
